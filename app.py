@@ -4,6 +4,7 @@ import streamlit as st
 from keras.saving.saving_api import load_model
 from sklearn.preprocessing import LabelEncoder
 
+pd.set_option('display.max_columns', None)
 model = load_model("my_model.h5")
 st.title("Прогнозування серцево-судинних хвороб")
 
