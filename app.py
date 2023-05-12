@@ -1,9 +1,10 @@
 import joblib
 import pandas as pd
 import streamlit as st
+from keras.saving.saving_api import load_model
 from sklearn.preprocessing import LabelEncoder
 
-model = open("Sequential.pkl", "rb")
+model = load_model("my_model.h5")
 rf = joblib.load(model)
 st.title("Прогнозування серцево-судинних хвороб")
 
