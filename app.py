@@ -59,7 +59,7 @@ st.divider()
 submit = st.button("Передбачити")
 if submit:
     print(input_df)
-    prediction = rf.predict(input_df)
-    # prediction_prob = rf.predict_proba(input_df)
+    prediction = model.predict(input_df)
+    # prediction_prob = model.predict_proba(input_df)
     st.markdown(f"**Вірогідність наявності серцево-судинної хвороби становить {round(prediction[0][0] * 100, 2)}%**")
 
