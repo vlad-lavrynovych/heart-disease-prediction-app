@@ -7,5 +7,5 @@ scikit_learn==1.2.2
 seaborn==0.12.2
 streamlit==1.22.0
 xgboost==1.7.5
-protobuf=3.20.*
-tensorflow=*
+protobuf==3.20.*
+tensorflow
