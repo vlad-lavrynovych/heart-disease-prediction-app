@@ -1,3 +1,5 @@
+import os
+
 import joblib
 import pandas as pd
 import streamlit as st
@@ -5,8 +7,14 @@ from keras.saving.saving_api import load_model
 from sklearn.preprocessing import LabelEncoder
 
 pd.set_option('display.max_columns', None)
-model = load_model("my_model.h5")
 st.title("Прогнозування серцево-судинних хвороб")
+
+models = {}
+for file in os.listdir("."):
+    if file.endswith(".pkl"):
+        models[file] = joblib.load(open(file, "rb"))
+
+models["Нейронна мережа"] = load_model("my_model.h5")
 
 YES_NO = ['Ні', 'Так']
 CHOLEST = ["Норма - завжди в межах норми",
@@ -54,11 +62,22 @@ input_df = pd.DataFrame(data, index=[0])
 
 st.divider()
 
+col1, col2 = st.columns([1, 1])
+with col1:
+    submit = st.button("Передбачити")
+with col2:
+    model = st.selectbox("Оберіть модель: ", options=list(models.keys()))
 
-submit = st.button("Передбачити")
 if submit:
     print(input_df)
-    prediction = model.predict(input_df)
+    if model == "Нейронна мережа":
+        model = models[model]
+        prediction = model.predict(input_df)
+        prediction = round(prediction[0][0] * 100, 2)
     # prediction_prob = model.predict_proba(input_df)
-    st.markdown(f"**Вірогідність наявності серцево-судинної хвороби становить {round(prediction[0][0] * 100, 2)}%**")
+    else:
+        model = models[model]
+        prediction = model.predict_proba(input_df)
+        prediction = round(prediction[0][1] * 100, 2)
+    st.markdown(f"**Вірогідність наявності серцево-судинної хвороби становить {prediction}%**")
 
